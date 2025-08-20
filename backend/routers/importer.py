@@ -33,6 +33,7 @@ def _to_dt(x):
             return None
 
 @router.post("/excel")
+@router.post("")
 async def import_excel(file: UploadFile = File(...), db: Session = Depends(get_db)):
     fname = file.filename or ""
     if not fname.lower().endswith((".xlsx", ".xls")):
@@ -79,6 +80,24 @@ async def import_excel(file: UploadFile = File(...), db: Session = Depends(get_d
         df["fecha_hora_medicion"] = df["fecha_hora_medicion"].apply(_to_dt)
     else:
         df["fecha_hora_medicion"] = None
+    
+    # normalización extra (después de df = df.rename(...))
+    for col in ["pv","formato","descripcion_sku","causal","estado","tipo_resultado",
+                "categoria","marca","formato_marketing","responsable","sector_operativo",
+                "provincia","cliente","proveedor"]:
+        if col in df.columns:
+            df[col] = df[col].astype(str).str.strip()
+
+    # estado/tipo en mayúscula:
+    df["estado"] = df["estado"].str.upper()
+    df["tipo_resultado"] = df["tipo_resultado"].str.upper()
+
+    # código de barras sin espacios, sin notación científica
+    df["codigo_barra"] = df["codigo_barra"].astype(str).str.replace(r"\.0$", "", regex=True).str.strip()
+
+    # filtra fechas fuera de rango razonable
+    df = df[(df["fecha"] >= pd.to_datetime("2023-01-01")) & (df["fecha"] <= pd.to_datetime("2026-12-31"))]
+
 
     # limpieza básica (requisito: eliminar nulos, formatear, validar rangos). Mantendremos lo esencial.
     df = df.dropna(subset=["id_conjunto","fecha","pv","codigo_barra","descripcion_sku","estado","tipo_resultado"])

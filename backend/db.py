@@ -1,25 +1,52 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, DeclarativeBase
+# backend/db.py
 import os
+from sqlalchemy import create_engine, text
+from sqlalchemy.orm import sessionmaker, declarative_base
 from dotenv import load_dotenv
 
 load_dotenv()
 
-DB_URL = os.getenv("DB_URL", "sqlite:///./osa.db")
+# Variables de conexión (de .env / docker-compose)
+DB_USER = os.getenv("DB_USER", "osa_user")
+DB_PASS = os.getenv("DB_PASS", "osa_pass")
+DB_HOST = os.getenv("DB_HOST", "db")
+DB_PORT = os.getenv("DB_PORT", "3306")
+DB_NAME = os.getenv("DB_NAME", "osa_db")
 
-connect_args = {}
-if DB_URL.startswith("sqlite"):
-    connect_args = {"check_same_thread": False}
+# URL MySQL (driver: mysql-connector-python)
+DB_URL = f"mysql+mysqlconnector://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
-engine = create_engine(DB_URL, echo=False, future=True, connect_args=connect_args)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# Engine y Session
+engine = create_engine(DB_URL, future=True)
+SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, future=True)
 
-class Base(DeclarativeBase):
-    pass
+# Base para modelos
+Base = declarative_base()
 
+# Dependencia de sesión para FastAPI
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
+
+# Índices para acelerar filtros típicos
+def ensure_indexes():
+    """Crea índices si no existen (ignora si ya están creados)."""
+    with engine.begin() as conn:
+        # fecha
+        try:
+            conn.execute(text("CREATE INDEX ix_measurements_fecha ON measurements (fecha)"))
+        except Exception:
+            pass
+        # pv
+        try:
+            conn.execute(text("CREATE INDEX ix_measurements_pv ON measurements (pv)"))
+        except Exception:
+            pass
+        # código de barras
+        try:
+            conn.execute(text("CREATE INDEX ix_measurements_codigo ON measurements (codigo_barra)"))
+        except Exception:
+            pass

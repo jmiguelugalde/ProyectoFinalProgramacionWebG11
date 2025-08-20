@@ -212,3 +212,23 @@ async function deleteStore(id) {
 // Bind de botones al cargar app
 document.querySelector('#btnStoreSave').onclick = saveStore;
 document.querySelector('#btnStoreReset').onclick = resetStoreForm;
+
+//Botón para subir Excel
+document.getElementById('btnUploadExcel').onclick = async () => {
+  const f = document.getElementById('inpExcel').files[0];
+  const msg = document.getElementById('uploadMsg');
+  if (!f) { msg.textContent = 'Seleccione un archivo .xlsx'; return; }
+  const fd = new FormData();
+  fd.append('file', f);
+  try {
+    const r = await fetch(API('/api/import/excel'), { method: 'POST', body: fd });
+    if (!r.ok) throw new Error(await r.text());
+    const data = await r.json();
+    msg.textContent = `Insertados: ${data.inserted}, omitidos: ${data.skipped}`;
+    // refrescar dashboard
+    await Promise.all([loadKpis(), loadItems(), loadWorst()]);
+  } catch(e) {
+    msg.textContent = 'Error al importar: ' + (e.message || e);
+  }
+};
+
