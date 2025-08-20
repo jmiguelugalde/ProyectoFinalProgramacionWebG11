@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+
+# Entornos
+.venv/
+env/
+venv/
+
+# Docker
+mysql-data/
+data/*.xlsx
+data/*.csv
+data/*.db
+
+# Configs sensibles
+.env

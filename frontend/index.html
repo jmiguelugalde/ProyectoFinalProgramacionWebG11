@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OSA Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div id="login">
+    <h1>OSA Dashboard</h1>
+    <div class="card">
+      <input id="user" placeholder="Usuario" />
+      <input id="pass" placeholder="Contraseña" type="password"/>
+      <button id="btnLogin">Ingresar</button>
+      <p class="hint">Demo: admin / admin123</p>
+      <p id="loginMsg" class="msg"></p>
+    </div>
+  </div>
+
+  <div id="app" class="hidden">
+    <header>
+      <h2>Panel</h2>
+      <button id="btnLogout">Salir</button>
+    </header>
+
+    <section class="filters">
+      <input id="fStore" placeholder="Filtrar por tienda (PV)" />
+      <input id="fFrom" placeholder="Desde (YYYY-MM-DD)" />
+      <input id="fTo" placeholder="Hasta (YYYY-MM-DD)" />
+      <button id="btnApply">Aplicar</button>
+    </section>
+
+    <section class="kpis">
+      <div class="kpi"><div class="kpi-title">Total</div><div id="kTotal" class="kpi-value">0</div></div>
+      <div class="kpi"><div class="kpi-title">OSA %</div><div id="kOsa" class="kpi-value">0</div></div>
+      <div class="kpi"><div class="kpi-title">OOS %</div><div id="kOos" class="kpi-value">0</div></div>
+    </section>
+
+    <section class="charts">
+      <canvas id="lineChart"></canvas>
+    </section>
+
+    <section>
+      <h3>Top 5 SKU con peor OSA</h3>
+      <table id="tblWorst">
+        <thead><tr><th>Barcode</th><th>OSA %</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section>
+      <h3>Últimas mediciones</h3>
+      <table id="tblItems">
+        <thead><tr><th>Fecha</th><th>PV</th><th>SKU</th><th>Estado</th><th>Tipo</th><th>OSA</th><th>OOS</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
