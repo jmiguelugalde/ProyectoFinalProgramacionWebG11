@@ -32,6 +32,28 @@ qs('#btnLogout').onclick = () => {
 
 qs('#btnApply').onclick = loadAll;
 
+// Subir Excel y procesar
+const upMsg = document.querySelector('#upMsg');
+const btnUpload = document.querySelector('#btnUpload');
+if (btnUpload) {
+  btnUpload.onclick = async () => {
+    const f = document.querySelector('#fileExcel').files[0];
+    if (!f) { upMsg.textContent = 'Seleccione un archivo .xlsx'; return; }
+    upMsg.textContent = 'Procesando...';
+    const fd = new FormData();
+    fd.append('file', f);
+    try {
+      const r = await fetch(API('/api/import/excel'), { method: 'POST', body: fd });
+      if (!r.ok) throw new Error(await r.text());
+      const j = await r.json();
+      upMsg.textContent = `OK: insertados ${j.inserted}, omitidos ${j.skipped}`;
+      await loadAll();   // refresca KPIs/gráficos/tabla
+    } catch (e) {
+      upMsg.textContent = 'Error: ' + e.message;
+    }
+  };
+}
+
 async function loadAll(){
   const store = qs('#fStore').value || '';
   const f = qs('#fFrom').value || '';

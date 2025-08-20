@@ -1,4 +1,4 @@
-# OSA Dashboard (mínimo viable)
+# OSA Dashboard
 
 ## Requisitos
 - Python 3.11+

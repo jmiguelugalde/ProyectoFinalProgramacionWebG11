@@ -9,11 +9,17 @@ from datetime import date
 from sqlalchemy import and_, func
 from sqlalchemy import func
 from decimal import Decimal
-
-
 from .db import Base, engine, get_db
 from .models import Measurement
 from .import_excel import load_excel
+from .routers import stores as stores_router
+from .routers import importer as importer_router
+from fastapi import FastAPI
+
+app = FastAPI()
+app.include_router(stores_router.router)
+app.include_router(importer_router.router)
+
 
 load_dotenv()
 Base.metadata.create_all(bind=engine)
