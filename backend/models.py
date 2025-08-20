@@ -2,6 +2,14 @@ from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import String, Integer, Date, DateTime, Float
 from .db import Base
 
+class Store(Base):
+    __tablename__ = "stores"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(120), unique=True)   # nombre de la tienda (PV)
+    provincia: Mapped[str | None] = mapped_column(String(80), nullable=True)
+    formato: Mapped[str | None] = mapped_column(String(60), nullable=True)
+    cliente: Mapped[str | None] = mapped_column(String(120), nullable=True)
+
 class Measurement(Base):
     __tablename__ = "measurements"
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
@@ -27,3 +35,5 @@ class Measurement(Base):
     fecha_hora_medicion: Mapped["DateTime"] = mapped_column(DateTime)
     osa_flag: Mapped[int] = mapped_column(Integer)  # 1 OSA / 0 no
     oos_flag: Mapped[int] = mapped_column(Integer)  # 1 OOS / 0 no
+
+

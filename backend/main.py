@@ -1,4 +1,5 @@
 import os
+from .routers import stores as stores_router
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
@@ -29,6 +30,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(stores_router.router)
 
 @app.get("/health")
 def health():
@@ -132,3 +135,7 @@ def measurements(store: str | None = None, date_from: str | None = None, date_to
             "oos_flag": m.oos_flag,
         }
     return {"items": [as_dict(r) for r in rows]}
+
+# ... después de crear app y middlewares ...
+      
+
