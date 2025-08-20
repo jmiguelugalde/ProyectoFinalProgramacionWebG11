@@ -60,7 +60,7 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
 /* Fila superior: filtros + import */
 .top-row {
   display: grid;
-  grid-template-columns: 1fr 380px; /* filtros ocupan más, import fijo */
+  grid-template-columns: 1fr 380px; /* filtros a la izquierda, import fijo a la derecha */
   gap: 20px;
   align-items: start;
   padding: 16px;
@@ -156,4 +156,32 @@ thead { background:#f3f4f6; }
 /* Responsive */
 @media (max-width: 900px) {
   .charts-wrap { grid-template-columns: 1fr; }
+}
+
+/* ---- Fila superior: filtros + importar ---- */
+.top-row{
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px; /* filtros a la izq, import 360px */
+  gap: 20px;
+  align-items: start;
+  padding: 16px;
+}
+
+/* El card de filtros ocupa todo el ancho de su columna y sin márgenes extra */
+.top-row .filters.card{
+  max-width: 360px;
+  margin: 0;
+}
+
+/* El card de importar compacto y pegado a la derecha */
+.import-card{
+  width: 100%;
+  max-width: 360px;      /* tamaño fijo de la columna derecha */
+  justify-self: end;     /* alinea la tarjeta al borde derecho */
+}
+
+/* En pantallas pequeñas, apilar */
+@media (max-width: 1024px){
+  .top-row{ grid-template-columns: 1fr; }
+  .import-card{ max-width: none; justify-self: stretch; }
 }

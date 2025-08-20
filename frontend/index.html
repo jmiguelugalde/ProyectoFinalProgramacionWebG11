@@ -27,21 +27,26 @@
       <button id="btnLogout" class="btn-logout">Salir</button>
     </header>
 
-    <!-- Filtros -->
-    <section class="filters card">
-      <input id="fStore" placeholder="Filtrar por tienda (PV)" />
-      <input id="fFrom" type="date" placeholder="Desde" />
-      <input id="fTo" type="date" placeholder="Hasta" />
-      <button id="btnApply">Aplicar</button>
-    </section>
+  <!-- Filtros + Importar Excel en la misma fila -->
+<div class="top-row">
 
-    <!-- Botón para subir Excel-->
-    <section class="card" style="margin:16px">
-      <h3>Importar mediciones (.xlsx)</h3>
-      <input id="inpExcel" type="file" accept=".xlsx,.xls"/>
-      <button id="btnUploadExcel">Subir y procesar</button>
-      <span id="uploadMsg" class="hint"></span>
-    </section>
+  <!-- Filtros -->
+  <section class="filters card">
+    <input id="fStore" placeholder="Filtrar por tienda (PV)" />
+    <input id="fFrom" type="date" placeholder="Desde" />
+    <input id="fTo" type="date" placeholder="Hasta" />
+    <button id="btnApply">Aplicar</button>
+  </section>
+
+  <!-- Importar Excel (compacto) -->
+  <section class="card import-card">
+    <h3>Importar mediciones (.xlsx)</h3>
+    <input id="inpExcel" type="file" accept=".xlsx,.xls"/>
+    <button id="btnUploadExcel">Subir y procesar</button>
+    <span id="uploadMsg" class="hint"></span>
+  </section>
+
+</div>
 
     <!-- KPIs -->
     <section class="kpis">
