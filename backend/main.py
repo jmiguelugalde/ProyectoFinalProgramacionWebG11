@@ -6,12 +6,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from dotenv import load_dotenv
-from backend.routers import users, stores, importer
 from .db import Base, engine, get_db, ensure_indexes
 from .models import Measurement
-from .routers import stores as stores_router
-from .routers import importer as importer_router
-
+from backend.routers import users, stores, importer
 
 # Configuración de CORS
 origins = [
@@ -25,21 +22,22 @@ app = FastAPI(title="OSA Dashboard API", version="0.1")
 # Registrar router de usuarios
 app.include_router(users.router)
 app.include_router(stores.router)
+app.include_router(importer.router)
+
 
 @app.get("/")
 def root():
     return {"mensaje": "Bienvenido al dashboard OSA"}
 
-
+# Cargar variables de entorno
 load_dotenv()
-
 ADMIN_USER = os.getenv("ADMIN_USER", "admin")
 ADMIN_PASS = os.getenv("ADMIN_PASS", "admin123")
 
-
+# Configuración de CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

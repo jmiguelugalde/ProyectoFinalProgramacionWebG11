@@ -9,6 +9,7 @@ from datetime import datetime
 
 router = APIRouter(prefix="/api/import", tags=["import"])
 
+
 def _to_date(x):
     if pd.isna(x) or x is None or str(x).strip()=="":
         return None
@@ -33,11 +34,10 @@ def _to_dt(x):
             return None
 
 @router.post("/excel")
-@router.post("")
 async def import_excel(file: UploadFile = File(...), db: Session = Depends(get_db)):
     fname = file.filename or ""
     if not fname.lower().endswith((".xlsx", ".xls")):
-        raise HTTPException(400, "Archivo debe ser .xlsx o .xls")
+        raise HTTPException(400, "Archivo debe ser .xlsx o .xls") 
 
     content = await file.read()
     try:
@@ -75,11 +75,16 @@ async def import_excel(file: UploadFile = File(...), db: Session = Depends(get_d
 
     # renombrar y normalizar
     df = df.rename(columns=colmap)
-    df["fecha"] = df["fecha"].apply(_to_date)
+
+    # asegurar que fecha siempre sea Timestamp
+    df["fecha"] = pd.to_datetime(df["fecha"], errors="coerce")
+
     if "fecha_hora_medicion" in df.columns:
-        df["fecha_hora_medicion"] = df["fecha_hora_medicion"].apply(_to_dt)
+        df["fecha_hora_medicion"] = pd.to_datetime(
+            df["fecha_hora_medicion"], errors="coerce"
+        )
     else:
-        df["fecha_hora_medicion"] = None
+        df["fecha_hora_medicion"] = pd.NaT
     
     # normalización extra (después de df = df.rename(...))
     for col in ["pv","formato","descripcion_sku","causal","estado","tipo_resultado",
