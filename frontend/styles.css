@@ -20,7 +20,7 @@ h1, h2 { text-align: center; }
    Layout / Utilidades
 ======================= */
 .view { padding-bottom: 24px; }
-header { display:flex; justify-content:space-between; align-items:center; padding:10px 16px; background:#fff; box-shadow:0 2px 6px rgba(0,0,0,.05); }
+header { display:flex; justify-content:space-between; align-items:center; gap: 10px; padding:10px 16px; background:#fff; box-shadow:0 2px 6px rgba(0,0,0,.05); }
 .filters { display:flex; flex-wrap:wrap; gap:10px; padding:10px 16px; }
 
 /* Tarjeta genérica */
@@ -108,7 +108,7 @@ button:hover { opacity:.9; }
   /* tamaño del área del gráfico */
   min-height: 520px;              /* sube a 600px si lo quieres más alto */
   width: 100%;
-  max-width: 1200px;              /* 👈 más ancho (ajústalo a gusto) */
+  max-width: 1200px;              /* más ancho (ajústalo a gusto) */
   margin-left: auto;
   margin-right: auto;
 }
@@ -142,8 +142,6 @@ thead { background:#f3f4f6; }
   .card { margin: 20px 12px; }
   .charts { margin: 0 12px 12px; }
 }
-
-
 
 /* Grid para dos gráficos */
 .charts-wrap {
@@ -184,4 +182,51 @@ thead { background:#f3f4f6; }
 @media (max-width: 1024px){
   .top-row{ grid-template-columns: 1fr; }
   .import-card{ max-width: none; justify-self: stretch; }
+}
+
+/* === Estilos para botones del header === */
+#btnExport,
+#btnLogout {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#btnExport {
+  background-color: #4CAF50; /* Verde para exportar */
+  color: white;
+}
+
+#btnLogout {
+  background-color: #f44336; /* Rojo para salir */
+  color: white;
+}
+
+/* === Ajustes para que el botón Exportar se vea === */
+header {
+  display: flex;
+  justify-content: space-between; /* título a la izquierda, botones a la derecha */
+  align-items: center;
+  padding: 10px;
+  gap: 10px;
+}
+
+header button {
+  display: inline-block;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background-color: #4caf50; /* verde para Exportar */
+  color: white;
+  cursor: pointer;
+}
+
+#btnLogout {
+  background-color: #f44336; /* rojo para salir */
+}
+
+header button:hover {
+  opacity: 0.9;
 }

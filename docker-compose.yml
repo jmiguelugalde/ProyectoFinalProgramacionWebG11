@@ -33,10 +33,11 @@ services:
         condition: service_healthy
 
   web:
-    image: nginx:alpine
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
       - "5173:80"
-    volumes:
-      - ./frontend:/usr/share/nginx/html:ro
     depends_on:
       - api
+

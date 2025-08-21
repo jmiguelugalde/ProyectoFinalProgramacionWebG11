@@ -6,18 +6,36 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from dotenv import load_dotenv
-
+from backend.routers import users, stores, importer
 from .db import Base, engine, get_db, ensure_indexes
 from .models import Measurement
 from .routers import stores as stores_router
 from .routers import importer as importer_router
+
+
+# Configuración de CORS
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+# Crear única instancia de FastAPI
+app = FastAPI(title="OSA Dashboard API", version="0.1")
+
+# Registrar router de usuarios
+app.include_router(users.router)
+app.include_router(stores.router)
+
+@app.get("/")
+def root():
+    return {"mensaje": "Bienvenido al dashboard OSA"}
+
 
 load_dotenv()
 
 ADMIN_USER = os.getenv("ADMIN_USER", "admin")
 ADMIN_PASS = os.getenv("ADMIN_PASS", "admin123")
 
-app = FastAPI(title="OSA Dashboard API", version="0.1")
 
 app.add_middleware(
     CORSMiddleware,
@@ -28,8 +46,12 @@ app.add_middleware(
 )
 
 # Routers
-app.include_router(stores_router.router)
-app.include_router(importer_router.router)
+
+# Endpoint de salud
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
+
 
 @app.on_event("startup")
 def on_startup():
