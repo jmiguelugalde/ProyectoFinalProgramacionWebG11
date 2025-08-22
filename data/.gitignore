@@ -1,4 +1,3 @@
-cd C:\Data\ProyectoFinalProgramacionWeb
 @"
 # Node / Vite
 frontend/node_modules/
@@ -15,13 +14,11 @@ backend/__pycache__/
 backend/.env
 frontend/.env
 
-# Datos/volúmenes locales
+# Volúmenes/archivos locales
 mysql-data/
-data/*
-!data/.gitignore
-!data/.env.example
+data/
 
-# IDE / SO
+# IDE y OS
 .vscode/
 .DS_Store
 

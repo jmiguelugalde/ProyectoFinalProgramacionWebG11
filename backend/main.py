@@ -6,7 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from dotenv import load_dotenv
-
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from .db import Base, engine, get_db, ensure_indexes
 from .models import Measurement
 from .routers import stores as stores_router

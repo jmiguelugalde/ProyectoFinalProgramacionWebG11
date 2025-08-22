@@ -1,6 +1,9 @@
+version: "3.9"
+
 services:
   db:
     image: mysql:8.0
+    container_name: osa_db
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: osa_db
@@ -15,28 +18,37 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
+    restart: unless-stopped
 
   api:
     build:
       context: .
       dockerfile: backend/Dockerfile
+    container_name: osa_api
     env_file:
       - ./.env
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: osa_user
+      DB_PASSWORD: osa_pass
+      DB_NAME: osa_db
     ports:
       - "8000:8000"
     volumes:
-      - ./backend:/app/backend:ro
       - ./data:/data
       - ./.env:/app/.env:ro
     depends_on:
       db:
         condition: service_healthy
+    restart: unless-stopped
 
   web:
-    image: nginx:alpine
+    build:
+      context: ./frontend
+    container_name: osa_web
     ports:
       - "5173:80"
-    volumes:
-      - ./frontend:/usr/share/nginx/html:ro
     depends_on:
       - api
+    restart: unless-stopped

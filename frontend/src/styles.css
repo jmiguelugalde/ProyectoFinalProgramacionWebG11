@@ -1,0 +1,232 @@
+/* =======================
+   Base / Reset
+======================= */
+:root {
+  --bg: #f6f7fb;
+  --card: #fff;
+  --text: #111827;
+  --muted: #6b7280;
+  --shadow: 0 8px 16px rgba(0,0,0,.08);
+  --shadow-sm: 0 2px 6px rgba(0,0,0,.06);
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; }
+body { font-family: system-ui, Arial, sans-serif; margin: 0; background: var(--bg); color: var(--text); }
+.hidden { display: none; }
+h1, h2 { text-align: center; }
+
+/* =======================
+   Layout / Utilidades
+======================= */
+.view { padding-bottom: 24px; }
+header { display:flex; justify-content:space-between; align-items:center; gap: 10px; padding:10px 16px; background:#fff; box-shadow:0 2px 6px rgba(0,0,0,.05); }
+.filters { display:flex; flex-wrap:wrap; gap:10px; padding:10px 16px; }
+
+/* Tarjeta genérica */
+.card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+/* Fila superior: filtros + import */
+.top-row {
+  display: grid;
+  grid-template-columns: 1fr 380px; 
+  gap: 20px;
+  align-items: start;
+  padding: 16px;
+}
+
+/* En pantallas pequeñas, apilar */
+@media (max-width: 1024px) {
+  .top-row { grid-template-columns: 1fr; }
+}
+
+/* Deja que la tarjeta de filtros use todo el ancho disponible */
+.filters.card { max-width: none; }
+
+/* Solo el login debe ser angosto y centrado */
+#login .card {
+  max-width: 360px;
+  margin: 40px auto;
+}
+
+/* Fila superior: filtros + import */
+.top-row {
+  display: grid;
+  grid-template-columns: 1fr 380px; /* filtros a la izquierda, import fijo a la derecha */
+  gap: 20px;
+  align-items: start;
+  padding: 16px;
+}
+
+/* En pantallas pequeñas, apilar */
+@media (max-width: 1024px) {
+  .top-row { grid-template-columns: 1fr; }
+}
+
+
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.actions { display:flex; gap:10px; margin-top:10px; }
+
+/* =======================
+   Controles / Botones
+======================= */
+input { padding: 10px; border-radius: 10px; border: 1px solid #ddd; }
+button { padding: 10px 14px; border-radius: 10px; border: 0; background: #111827; color: #fff; cursor: pointer; }
+button:hover { opacity:.9; }
+.btn-secondary { background:#6b7280; }
+.btn-logout { background:#111827; }
+
+.hint { color: #666; font-size: 12px; }
+.msg { color: #b91c1c; text-align:center; }
+
+/* =======================
+   KPIs
+======================= */
+.kpis { display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; padding: 10px 16px; }
+.kpi { background:#fff; padding:16px; border-radius:var(--radius); box-shadow:var(--shadow-sm); }
+.kpi-title { color:var(--muted); font-size:12px; }
+.kpi-value { font-size:28px; font-weight:700; }
+
+/* =======================
+   Gráfico (Chart.js)
+======================= */
+.charts {
+  background:#fff;
+  margin:0 16px 16px;
+  padding:16px;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-sm);
+
+  /* tamaño del área del gráfico */
+  min-height: 520px;              /* sube a 600px si lo quieres más alto */
+  width: 100%;
+  max-width: 1200px;              /* más ancho (ajústalo a gusto) */
+  margin-left: auto;
+  margin-right: auto;
+}
+.charts canvas {
+  width: 100% !important;
+  height: 100% !important;        /* ocupa todo el alto del contenedor */
+  display: block;
+}
+
+/* =======================
+   Tablas
+======================= */
+table {
+  width: calc(100% - 32px);
+  margin: 10px 16px 24px;
+  border-collapse: collapse;
+  background:#fff;
+  box-shadow:var(--shadow-sm);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+th, td { padding:8px 10px; border-bottom:1px solid #eee; font-size: 14px; }
+thead { background:#f3f4f6; }
+
+/* =======================
+   Responsive
+======================= */
+@media (max-width: 768px) {
+  .kpis { grid-template-columns: 1fr; }
+  .grid-2 { grid-template-columns: 1fr; }
+  .card { margin: 20px 12px; }
+  .charts { margin: 0 12px 12px; }
+}
+
+/* Grid para dos gráficos */
+.charts-wrap {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* línea más ancha; dona más angosta */
+  gap: 16px;
+  margin: 0 16px 16px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .charts-wrap { grid-template-columns: 1fr; }
+}
+
+/* ---- Fila superior: filtros + importar ---- */
+.top-row{
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px; /* filtros a la izq, import 360px */
+  gap: 20px;
+  align-items: start;
+  padding: 16px;
+}
+
+/* El card de filtros ocupa todo el ancho de su columna y sin márgenes extra */
+.top-row .filters.card{
+  max-width: 360px;
+  margin: 0;
+}
+
+/* El card de importar compacto y pegado a la derecha */
+.import-card{
+  width: 100%;
+  max-width: 360px;      /* tamaño fijo de la columna derecha */
+  justify-self: end;     /* alinea la tarjeta al borde derecho */
+}
+
+/* En pantallas pequeñas, apilar */
+@media (max-width: 1024px){
+  .top-row{ grid-template-columns: 1fr; }
+  .import-card{ max-width: none; justify-self: stretch; }
+}
+
+/* === Estilos para botones del header === */
+#btnExport,
+#btnLogout {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#btnExport {
+  background-color: #4CAF50; /* Verde para exportar */
+  color: white;
+}
+
+#btnLogout {
+  background-color: #f44336; /* Rojo para salir */
+  color: white;
+}
+
+/* === Ajustes para que el botón Exportar se vea === */
+header {
+  display: flex;
+  justify-content: space-between; /* título a la izquierda, botones a la derecha */
+  align-items: center;
+  padding: 10px;
+  gap: 10px;
+}
+
+header button {
+  display: inline-block;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background-color: #4caf50; /* verde para Exportar */
+  color: white;
+  cursor: pointer;
+}
+
+#btnLogout {
+  background-color: #f44336; /* rojo para salir */
+}
+
+header button:hover {
+  opacity: 0.9;
+}
