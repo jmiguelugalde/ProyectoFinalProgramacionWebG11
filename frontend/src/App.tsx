@@ -7,7 +7,13 @@ import zoomPlugin from "chartjs-plugin-zoom";
 
 Chart.register(annotationPlugin as any, zoomPlugin as any);
 
-const API = (path: string) => `http://127.0.0.1:8000${path}`;
+const BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.PROD
+    ? "https://pfinalprogramacionwebg11.onrender.com" // backend en Render
+    : "http://127.0.0.1:8000");
+
+const API = (path: string) => `${BASE_URL}${path}`;
 
 type SeriesItem = { date: string; osa_pct: number };
 type WorstItem = { barcode: string; osa_pct: number };
@@ -361,10 +367,19 @@ export default function App() {
 
       {/* KPIs */}
       {kpis && (
-        <section className="kpis" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginTop: 12 }}>
-          <div className="kpi card"><div className="kpi-title">Total</div><div className="kpi-value">{kpis.total}</div></div>
-          <div className="kpi card"><div className="kpi-title">OSA %</div><div className="kpi-value">{kpis.osa_pct}</div></div>
-          <div className="kpi card"><div className="kpi-title">OOS %</div><div className="kpi-value">{kpis.oos_pct}</div></div>
+        <section className="kpis">
+          <div className="kpi ok">
+            <div className="kpi-title">OSA</div>
+            <div className="kpi-value">{(kpis.osa_pct ?? 0).toFixed(2)}%</div>
+          </div>
+          <div className="kpi bad">
+            <div className="kpi-title">OOS</div>
+            <div className="kpi-value">{(kpis.oos_pct ?? 0).toFixed(2)}%</div>
+          </div>
+          <div className="kpi">
+            <div className="kpi-title">Registros</div>
+            <div className="kpi-value">{kpis.total ?? 0}</div>
+          </div>
         </section>
       )}
 
