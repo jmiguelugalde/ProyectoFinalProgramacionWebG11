@@ -1,4 +1,3 @@
-# Dockerfile
 FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -11,6 +10,9 @@ WORKDIR /app
 # deps de sistema mínimas (seguras para wheels)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential gcc libffi-dev && rm -rf /var/lib/apt/lists/*
+
+# crea carpeta para SQLite (Render)
+RUN mkdir -p /app/data
 
 # instala requirements del backend
 COPY backend/requirements.txt ./requirements.txt
