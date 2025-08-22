@@ -8,6 +8,7 @@ const __dirname = path.dirname(__filename)
 
 export default defineConfig({
   plugins: [react()],
+  base: '/', // necesario para Render Static Site
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
