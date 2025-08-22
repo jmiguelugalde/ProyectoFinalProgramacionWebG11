@@ -12,6 +12,7 @@ from .db import Base, engine, get_db, ensure_indexes
 from .models import Measurement
 from .routers import stores as stores_router
 from .routers import importer as importer_router
+from fastapi.responses import RedirectResponse
 
 load_dotenv()
 
@@ -20,13 +21,27 @@ ADMIN_PASS = os.getenv("ADMIN_PASS", "admin123")
 
 app = FastAPI(title="OSA Dashboard API", version="0.1")
 
+# CORS (ajusta tus orígenes)
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*").split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[o.strip() for o in ALLOWED_ORIGINS],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+#Se incluye para que se pueda ver en la página web
+# 👉 raíz: redirige a /docs (evita 404)
+@app.get("/", include_in_schema=False)
+def root():
+    return RedirectResponse(url="/docs")
+
+# 👉 healthcheck para Render
+@app.get("/healthz", include_in_schema=False)
+def healthz():
+    return {"status": "ok"}
 
 # Routers
 app.include_router(stores_router.router)
