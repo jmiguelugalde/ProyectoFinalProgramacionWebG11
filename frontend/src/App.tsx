@@ -31,6 +31,7 @@ export default function App() {
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [msg, setMsg] = useState("");
+  const [showPass, setShowPass] = useState(false);
 
   // --- data + charts ---
   const [kpis, setKpis] = useState<KPIResponse | null>(null);
