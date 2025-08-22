@@ -13,6 +13,7 @@ from .models import Measurement
 from .routers import stores as stores_router
 from .routers import importer as importer_router
 from fastapi.responses import RedirectResponse
+from fastapi import Response
 
 load_dotenv()
 
@@ -21,16 +22,26 @@ ADMIN_PASS = os.getenv("ADMIN_PASS", "admin123")
 
 app = FastAPI(title="OSA Dashboard API", version="0.1")
 
-# CORS (ajusta tus orígenes)
-ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*").split(",")
+# CORS (ajusta los orígenes)
+CORS_PERMISSIVE = os.getenv("CORS_PERMISSIVE", "false").lower() == "true"
+ALLOWED_ORIGINS_ENV = os.getenv("ALLOWED_ORIGINS", "")
+
+origins = ["*"] if CORS_PERMISSIVE else [
+    o.strip() for o in ALLOWED_ORIGINS_ENV.split(",") if o.strip()
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[o.strip() for o in ALLOWED_ORIGINS],
-    allow_credentials=True,
+    allow_origins=origins,
+    allow_credentials=not CORS_PERMISSIVE,  # si "*" => False (requerido por navegador)
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Preflight explícito
+@app.options("/api/{path:path}", include_in_schema=False)
+def options_catch_all(path: str):
+    return Response(status_code=204)
 
 #Se incluye para que se pueda ver en la página web
 # 👉 raíz: redirige a /docs (evita 404)
