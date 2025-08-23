@@ -232,9 +232,19 @@ export default function App() {
           type: "doughnut",
           data: {
             labels: ["OSA %", "OOS %"],
-            datasets: [{ data: [data.osa_pct, data.oos_pct] }],
+            datasets: [{
+              data: [data.osa_pct, data.oos_pct],
+              radius: "88%",     // ↓ más pequeño para que no se salga
+              cutout: "64%",     // grosor del aro (opcional)
+              borderWidth: 0
+            }],
           },
-          options: { responsive: true } as any,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,   // usa el alto del contenedor
+            layout: { padding: 12 },      // margen interno para que no pegue al borde
+            plugins: { legend: { position: "top" } }
+          } as any,
         });
         setPieChart(pc);
       }
