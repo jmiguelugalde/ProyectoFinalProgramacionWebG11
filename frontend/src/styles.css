@@ -106,7 +106,7 @@ button:hover { opacity:.9; }
   box-shadow:var(--shadow-sm);
 
   /* tamaño del área del gráfico */
-  min-height: 520px;              /* sube a 600px si lo quieres más alto */
+  min-height: 420px;              /* sube a 600px si lo quieres más alto */
   width: 100%;
   max-width: 1200px;              /* más ancho (ajústalo a gusto) */
   margin-left: auto;
