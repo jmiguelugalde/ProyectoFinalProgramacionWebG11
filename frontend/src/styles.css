@@ -48,7 +48,7 @@ header { display:flex; justify-content:space-between; align-items:center; gap: 1
   .top-row { grid-template-columns: 1fr; }
 }
 
-/* Deja que la tarjeta de filtros use todo el ancho disponible */
+/* La tarjeta de filtros usa todo el ancho disponible */
 .filters.card { max-width: none; }
 
 /* Solo el login debe ser angosto y centrado */
@@ -106,15 +106,15 @@ button:hover { opacity:.9; }
   box-shadow:var(--shadow-sm);
 
   /* tamaño del área del gráfico */
-  min-height: 420px;              /* sube a 600px si lo quieres más alto */
+  min-height: 300px;              
   width: 100%;
-  max-width: 1200px;              /* más ancho (ajústalo a gusto) */
+  max-width: 1200px;              
   margin-left: auto;
   margin-right: auto;
 }
 .charts canvas {
   width: 100% !important;
-  height: 100% !important;        /* ocupa todo el alto del contenedor */
+  height: 100% !important;        
   display: block;
 }
 
@@ -234,7 +234,7 @@ header button:hover {
 /* #Inclusión del día final */
 
 /* 1) Contenedor general más centrado */
-.view { max-width: 1200px; margin: 0 auto; padding: 16px 16px 24px; }
+.view { max-width: 1320px; margin: 0 auto; padding: 16px 16px 24px; }
 
 /* 2) KPIs con acento visual */
 .kpi.ok{ border-left:6px solid #16a34a; }   /* OSA */
